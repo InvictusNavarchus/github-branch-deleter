@@ -5,7 +5,7 @@
 // @icon64       https://github.githubassets.com/pinned-octocat.svg
 // downloadURL   https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
 // @updateURL    https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
-// @version      0.1.1
+// @version      0.1.2
 // @description  Adds a button to delete all non-default/protected branches on the GitHub branches page.
 // @author       Invictus Navarchus
 // @match        https://github.com/*/*/branches*
@@ -20,7 +20,7 @@
     const config = {
         // Delay in milliseconds between deleting each branch.
         // This helps prevent rate-limiting and gives the UI time to update.
-        deleteDelay: 1500,
+        deleteDelay: 200,
         // Selector for the container where the "Delete All" button will be injected.
         buttonContainerSelector: 'div[class*="PageLayout-Header-"] div[class*="Box-sc"]',
         // Selector for individual branch rows in the table.
