@@ -1,9 +1,13 @@
 // ==UserScript==
-// @name         GitHub Batch Branch Deleter
-// @namespace    http://tampermonkey.net/
-// @version      1.1
+// @name         GitHub Branch Deleter
+// @namespace    https://github.com/InvictusNavarchus/github-branch-deleter
+// @icon         https://github.githubassets.com/pinned-octocat.svg
+// @icon64       https://github.githubassets.com/pinned-octocat.svg
+// downloadURL   https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
+// @updateURL    https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
+// @version      0.1.0
 // @description  Adds a button to delete all non-default/protected branches on the GitHub branches page.
-// @author       Gemini
+// @author       Invictus Navarchus
 // @match        https://github.com/*/*/branches*
 // @grant        none
 // @run-at       document-end
