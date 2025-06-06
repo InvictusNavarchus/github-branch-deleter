@@ -5,7 +5,7 @@
 // @icon64       https://github.githubassets.com/pinned-octocat.svg
 // downloadURL   https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
 // @updateURL    https://raw.githubusercontent.com/InvictusNavarchus/github-branch-deleter/master/github-branch-deleter.user.js
-// @version      0.1.0
+// @version      0.1.1
 // @description  Adds a button to delete all non-default/protected branches on the GitHub branches page.
 // @author       Invictus Navarchus
 // @match        https://github.com/*/*/branches*
@@ -26,14 +26,7 @@
         // Selector for individual branch rows in the table.
         branchRowSelector: 'tbody[class*="TableBody"] tr[class*="TableRow"]',
         // Selector for the delete icon button within a branch row.
-        deleteButtonSelector: 'button:has(svg.octicon-trash)',
-        // Selectors for the confirmation button in the delete dialog.
-        // We try a few common patterns since the exact class can change.
-        confirmButtonSelectors: [
-            'dialog[aria-labelledby="confirm-delete-dialog-header"] button[type="submit"].btn-danger',
-            'dialog form button[type="submit"][class*="danger"]',
-            'dialog button[data-variant="danger"]'
-        ]
+        deleteButtonSelector: 'button:has(svg.octicon-trash)'
     };
 
     /**
@@ -42,18 +35,6 @@
      * @returns {Promise<void>}
      */
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-    /**
-     * Finds the confirmation button from a list of potential selectors.
-     * @returns {HTMLElement|null} The found button element or null.
-     */
-    function findConfirmButton() {
-        for (const selector of config.confirmButtonSelectors) {
-            const button = document.querySelector(selector);
-            if (button) return button;
-        }
-        return null;
-    }
 
     /**
      * Injects the main "Delete All" button onto the page.
@@ -109,24 +90,11 @@
             const branchName = row.querySelector('a[class*="BranchName"]')?.textContent.trim() || 'Unknown Branch';
 
             try {
-                // Click the trash icon to open the confirmation dialog.
+                // Click the delete button to delete the branch immediately.
                 btn.click();
-                await sleep(500); // Wait for the dialog to render.
-
-                // Find and click the final confirmation button.
-                const confirmButton = findConfirmButton();
-                if (confirmButton) {
-                    confirmButton.click();
-                    console.log(`Deletion confirmed for branch: ${branchName}`);
-                    deletedCount++;
-                    await sleep(config.deleteDelay); // Wait for the UI to update.
-                } else {
-                    console.error(`Could not find confirmation button for branch: ${branchName}. Skipping.`);
-                    errorCount++;
-                    // Try to close any open dialogs to avoid getting stuck.
-                    const closeButton = document.querySelector('dialog button[aria-label="Close"], dialog button[data-close-dialog-id]');
-                    if (closeButton) closeButton.click();
-                }
+                console.log(`Deleted branch: ${branchName}`);
+                deletedCount++;
+                await sleep(config.deleteDelay); // Wait for the UI to update.
             } catch (error) {
                 console.error(`An error occurred while deleting branch: ${branchName}`, error);
                 errorCount++;
